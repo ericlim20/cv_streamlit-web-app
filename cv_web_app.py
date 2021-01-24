@@ -6,12 +6,17 @@ import cv2
 from utils import *
 
 def prediction(net):   
-    # Draw or clear?
-    drawing_mode = st.checkbox("Draw or clear?",True)
-
+    # Draw or clear?    
+    option = st.radio('Select option: ', ('Draw', 'Clear'))    
+    
+    if(option == 'Draw'):
+        st.write("Draw a digit below and click on Predict button.")
+    else:
+        st.write("Double click on the digit or refresh the page to clear the digit.")
+    
     # Create a canvas component
     image_data = st_canvas(
-        15, '#FFF', '#000', height=280,width=280, drawing_mode=drawing_mode, key="canvas"
+        15, '#FFF', '#000', height=280,width=280, drawing_mode=(option=='Draw'), key="canvas"
     )
 
     # Predicting the image
@@ -27,11 +32,7 @@ def main():
     net = cv2.dnn.readNetFromONNX('model.onnx')
     
     st.title("Digit Recognizer")
-    st.write("\n\n")
-    st.write("Draw a digit below and click on Predict button")
-    st.write("\n")
-    st.write("To clear the digit, uncheck checkbox, double click on the digit or refresh the page")
-    st.write("To draw the digit, check the checkbox")
+    st.write("\n\n")    
 
     prediction(net)
 
